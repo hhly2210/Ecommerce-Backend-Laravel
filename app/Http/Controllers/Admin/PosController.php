@@ -143,15 +143,14 @@ class PosController extends Controller
             }
 
             foreach ($request->product_id as $key => $product_id) {
-                $product=Product::where('id',$product_id)->first();
-                $availableProduct=$product->available_quantity;
-                $qty=$request->sell_qty[$key];
-                $total_qty=$availableProduct-$qty;
-                Product::where('id',$product_id)->update(['available_quantity'=>$total_qty]);
+                $product = Product::where('id', $product_id)->first();
+                $availableProduct = $product->available_quantity;
+                $qty = $request->sell_qty[$key];
+                $total_qty = $availableProduct - $qty;
+                Product::where('id', $product_id)->update(['available_quantity' => $total_qty]);
             }
         } catch (\Throwable $e) {
             DB::rollBack();
-
         }
         return redirect()->back()->with('success', 'Successfully Payment Completed');
     }
@@ -162,7 +161,6 @@ class PosController extends Controller
         $common_data->title = 'Sell List';
         $sellList = Sell::where('sell_type', 1)->orderBy('id', 'desc')->get();
         return view('adminPanel.pos.pos_sell')->with(compact('sellList', 'common_data'));
-
     }
 
     public function sellInvoice(Request $request)
@@ -175,11 +173,8 @@ class PosController extends Controller
         ];
 
         $pdf = PDF::loadView('adminPanel.pos.sell_invoice', $data);
-//      return view('adminPanel.pos.sell_invoice');
-//      return $pdf->download('buy_invoice.pdf');
+        //      return view('adminPanel.pos.sell_invoice');
+        //      return $pdf->download('buy_invoice.pdf');
         return $pdf->stream('buy_invoice.pdf');
-
     }
-
-
 }

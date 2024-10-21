@@ -28,10 +28,11 @@ class PurchaseController extends Controller
         return view('adminPanel.product_stock.purchase_product')->with(compact('supplierList', 'bankList', 'common_data'));
     }
 
-    public function purchaseList(){
+    public function purchaseList()
+    {
         $common_data = new Array_();
         $common_data->title = 'Product Purchase';
-        $purchaseList=PurchaseProductList::orderBy('date','desc')->get();
+        $purchaseList = PurchaseProductList::orderBy('date', 'desc')->get();
         return view('adminpanel.product_stock.purchase_list')->with(compact('purchaseList'));
     }
 
@@ -47,63 +48,62 @@ class PurchaseController extends Controller
         $purchase->supplier_id = $request->supplier_id;
         $purchase->date = Carbon::now();
         $purchase->save();
-        $purchase->purchase_code=1000+$purchase->id;
+        $purchase->purchase_code = 1000 + $purchase->id;
         $purchase->save();
         foreach ($request->product_id as $key => $product) {
-            $productId=$request->product_id[$key];
-            $productdata=Product::find($productId)->first();
-            $availableProduct=$productdata->available_quantity;
-            $qty=$request->sell_qty[$key];
-            $totalProduct=$availableProduct+$qty;
+            $productId = $request->product_id[$key];
+            $productdata = Product::find($productId)->first();
+            $availableProduct = $productdata->available_quantity;
+            $qty = $request->sell_qty[$key];
+            $totalProduct = $availableProduct + $qty;
             $payable = $request->unit_cost[$key] * $request->sell_qty[$key];
             $purchaseProduct = new PurchaseDetails();
             $purchaseProduct->purchase_id = $purchase->id;
             $purchaseProduct->product_id = $request->product_id[$key];
             $purchaseProduct->purchase_payable_amount = $payable;
-            $purchaseProduct->unit_cost =$request->unit_cost[$key];
-            $purchaseProduct->total_qty =$qty;
-            $purchaseProduct->total_cost =$payable;
-            $purchaseProduct->total_vat =0;
+            $purchaseProduct->unit_cost = $request->unit_cost[$key];
+            $purchaseProduct->total_qty = $qty;
+            $purchaseProduct->total_cost = $payable;
+            $purchaseProduct->total_vat = 0;
             $purchaseProduct->date = Carbon::now();
-            $purchaseProduct->total_discount =0;
+            $purchaseProduct->total_discount = 0;
             $purchaseProduct->save();
         }
         foreach ($request->product_id as $key => $product_id) {
-            $product=Product::where('id',$product_id)->first();
-            $availableProduct=$product->available_quantity;
-            $qty=$request->sell_qty[$key];
-            $total_qty=$availableProduct+$qty;
-            Product::where('id',$product_id)->update(['available_quantity'=>$total_qty]);
+            $product = Product::where('id', $product_id)->first();
+            $availableProduct = $product->available_quantity;
+            $qty = $request->sell_qty[$key];
+            $total_qty = $availableProduct + $qty;
+            Product::where('id', $product_id)->update(['available_quantity' => $total_qty]);
         }
 
 
 
-           return  redirect()->back()->with('success','Successfully Product Purchase');
+        return  redirect()->back()->with('success', 'Successfully Product Purchase');
     }
 
     public function purchaseInvoice(Request $request)
     {
-//        return $request->id;
-          $purchaseInfo = PurchaseProductList::with('purchaseInfo')->where('id',$request->id)->first();
-          $purchaseDetails=PurchaseDetails::with('productInfo')->where('purchase_id',$request->id)->get();
+        //        return $request->id;
+        $purchaseInfo = PurchaseProductList::with('purchaseInfo')->where('id', $request->id)->first();
+        $purchaseDetails = PurchaseDetails::with('productInfo')->where('purchase_id', $request->id)->get();
 
 
-//        return $purchaseInfo->purchaseDetails;
+        //        return $purchaseInfo->purchaseDetails;
 
 
-//        supplierInfo
-//purchaseDetails
-//ProductInfo
+        //        supplierInfo
+        //purchaseDetails
+        //ProductInfo
 
         $data = [
             'purchase' => $purchaseInfo,
-            'purchaseDetails'=>$purchaseDetails,
+            'purchaseDetails' => $purchaseDetails,
         ];
 
         $pdf = PDF::loadView('adminPanel.product_stock.purchase_invoice', $data);
-//      return view('adminPanel.pos.sell_invoice');
-//      return $pdf->download('buy_invoice.pdf');
+        //      return view('adminPanel.pos.sell_invoice');
+        //      return $pdf->download('buy_invoice.pdf');
         return $pdf->stream('Purchase_invoice.pdf');
-
     }
 }

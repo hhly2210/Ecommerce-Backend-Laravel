@@ -24,9 +24,10 @@ class offerController extends Controller
         return view('adminPanel.offer.offer_list')->with(compact('category', 'offer', 'common_data'));
     }
 
-    public function offerBannerDelete(Request $request){
-       $offerProduct=Offer_product_list::where('offer_id',$request->id)->delete();
-       $offer=Offer::where('id',$request->id)->delete();
+    public function offerBannerDelete(Request $request)
+    {
+        $offerProduct = Offer_product_list::where('offer_id', $request->id)->delete();
+        $offer = Offer::where('id', $request->id)->delete();
         return redirect()->back()->with('success', 'Successfully  Offer banner deleted');
     }
 
@@ -49,14 +50,14 @@ class offerController extends Controller
 
     public function offerProductList(Request $request)
     {
-         $offer=Offer::find($request->id);
-        $offerName=$offer->offer_name;
+        $offer = Offer::find($request->id);
+        $offerName = $offer->offer_name;
         $common_data = new Array_();
-        $common_data->title =$offerName.' Products List';
-        $offerList = Offer::where('status', 1)->where('deleted', '0')->where('id',$request->id)->get();
-        $offerProductList = Offer_product_list::where('status', 1)->where('deleted', '0')->where('offer_id',$request->id)->get();
+        $common_data->title = $offerName . ' Products List';
+        $offerList = Offer::where('status', 1)->where('deleted', '0')->where('id', $request->id)->get();
+        $offerProductList = Offer_product_list::where('status', 1)->where('deleted', '0')->where('offer_id', $request->id)->get();
         $productList = Product::where('status', 1)->where('deleted', '0')->get();
-        return view('adminPanel.offer.offer_product_list')->with(compact('offerList', 'productList', 'offerProductList','offer', 'common_data'));
+        return view('adminPanel.offer.offer_product_list')->with(compact('offerList', 'productList', 'offerProductList', 'offer', 'common_data'));
     }
 
     public function storeOfferProduct(Request $request)
@@ -70,7 +71,6 @@ class offerController extends Controller
             $offerProduct->save();
         }
         return redirect()->back()->with('success', 'Successfully offer Product Saved');
-
     }
 
     public function offerProductDelete(Request $request)
@@ -79,18 +79,17 @@ class offerController extends Controller
         return redirect()->back()->with('success', 'Successfully Deleted Offer Product');
     }
 
-    public function offerBannerUpdate(Request $request){
+    public function offerBannerUpdate(Request $request)
+    {
         $offer = Offer::find($request->offer_id);
         $offer->offer_name = $request->offer_name;
         $offer->start_date = $request->start_date;
         $offer->end_date = $request->end_date;
-        if($request->updateImage){
+        if ($request->updateImage) {
             $offer->banner_image = $this->bannerImageSave($request->updateImage);
         }
         $offer->save();
         return redirect()->back()->with('success', 'Successfully  Offer Updated');
-
-
     }
 
 
@@ -117,8 +116,6 @@ class offerController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 }

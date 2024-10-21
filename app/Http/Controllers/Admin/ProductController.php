@@ -38,60 +38,63 @@ class ProductController extends Controller
         $common_data->title = 'Add Product';
         $productCategory = ProductCategory::where('status', 1)->where('deleted', 0)->get();
         $supplierList = Supplier::where('status', 1)->where('deleted', 0)->get();
-        $brand=Brand::get();
-        $color=ProductColor::get();
-        $size=ProductSize::get();
-        return view('adminPanel.product.create_product')->with(compact('productCategory', 'supplierList', 'common_data','brand','color','size'));
-
+        $brand = Brand::get();
+        $color = ProductColor::get();
+        $size = ProductSize::get();
+        return view('adminPanel.product.create_product')->with(compact('productCategory', 'supplierList', 'common_data', 'brand', 'color', 'size'));
     }
 
-    public function productSizeUpdate(Request $request){
-        $productSize= ProductSize::find($request->id);
-        $productSize->size=$request->size;
+    public function productSizeUpdate(Request $request)
+    {
+        $productSize = ProductSize::find($request->id);
+        $productSize->size = $request->size;
         $productSize->save();
         return redirect()->back()->with('success', 'Product Size Successfully Updated');
-
     }
-    public function productColorUpdate(Request $request){
-        $productColor= ProductColor::find($request->id);
-        $productColor->name=$request->name;
-        $productColor->color_code=$request->color_code;
+    public function productColorUpdate(Request $request)
+    {
+        $productColor = ProductColor::find($request->id);
+        $productColor->name = $request->name;
+        $productColor->color_code = $request->color_code;
         $productColor->save();
         return redirect()->back()->with('success', 'Product Size Successfully Updated');
-
     }
 
-    public function productColor(){
+    public function productColor()
+    {
         $common_data = new Array_();
         $common_data->title = 'Add Color';
-        $productColor=ProductColor::get();
-        return view('adminPanel.product_color.product_color_list')->with(compact("common_data",'productColor'));
+        $productColor = ProductColor::get();
+        return view('adminPanel.product_color.product_color_list')->with(compact("common_data", 'productColor'));
     }
 
-    public function productColorStore(Request $request){
-        $productcolor=new ProductColor();
-        $productcolor->name=$request->name;
-        $productcolor->color_code=$request->color_code;
+    public function productColorStore(Request $request)
+    {
+        $productcolor = new ProductColor();
+        $productcolor->name = $request->name;
+        $productcolor->color_code = $request->color_code;
         $productcolor->save();
         return redirect()->back()->with('success', 'Product Color Successfully Created');
     }
 
-    public function productSize(){
+    public function productSize()
+    {
         $common_data = new Array_();
         $common_data->title = 'Add Size';
-        $productSize=ProductSize::get();
-        return view('adminPanel.product_size.product_size')->with(compact("common_data",'productSize'));;
+        $productSize = ProductSize::get();
+        return view('adminPanel.product_size.product_size')->with(compact("common_data", 'productSize'));;
     }
-     public function productSizeStore(Request $request){
-        $sizelist=  explode(",",$request->size);
-        foreach ($sizelist as $size){
+    public function productSizeStore(Request $request)
+    {
+        $sizelist =  explode(",", $request->size);
+        foreach ($sizelist as $size) {
 
-            $productsize=new ProductSize();
-            $productsize->size=$size;
+            $productsize = new ProductSize();
+            $productsize->size = $size;
             $productsize->save();
         }
-         return redirect()->back()->with('success', 'Product Size Successfully Created');
-     }
+        return redirect()->back()->with('success', 'Product Size Successfully Created');
+    }
     public function storeProduct(Request $request)
     {
 
@@ -151,10 +154,10 @@ class ProductController extends Controller
         $productCategory = ProductCategory::where('status', 1)->where('deleted', 0)->get();
         $productSubcategory = ProductSubCategory::where('category_id', $productInfo->category_id)->where('status', 1)->where('deleted', 0)->get();
         $supplierList = Supplier::where('status', 1)->where('deleted', 0)->get();
-        $brand=Brand::get();
-        $color=ProductColor::get();
-        $size=ProductSize::get();
-        return view('adminPanel.product._edit_product')->with(compact('productInfo', 'supplierList', 'productCategory', 'productSubcategory', 'supplierList','brand','color','size'))->render();
+        $brand = Brand::get();
+        $color = ProductColor::get();
+        $size = ProductSize::get();
+        return view('adminPanel.product._edit_product')->with(compact('productInfo', 'supplierList', 'productCategory', 'productSubcategory', 'supplierList', 'brand', 'color', 'size'))->render();
     }
 
     public function imageDelete(Request $request)
@@ -257,9 +260,7 @@ class ProductController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 
     public function productBarcodeGenerate(Request $request)
@@ -272,9 +273,8 @@ class ProductController extends Controller
         ];
 
         $pdf = PDF::loadView('adminPanel.product.barcode_generate', $data);
-//      return view('adminPanel.pos.sell_invoice');
-//      return $pdf->download('buy_invoice.pdf');
+        //      return view('adminPanel.pos.sell_invoice');
+        //      return $pdf->download('buy_invoice.pdf');
         return $pdf->stream('buy_invoice.pdf');
-
     }
 }

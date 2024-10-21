@@ -37,10 +37,10 @@ class AdminController extends Controller
         Auth::guard('admin')->logout();
         return redirect()->intended('/');
     }
-    public function adminDelete(Request $request){
-        Admin::where('id',$request->id)->delete();
+    public function adminDelete(Request $request)
+    {
+        Admin::where('id', $request->id)->delete();
         return redirect()->back()->with('success', 'Successfully admin deleted');
-
     }
 
     public function adminRole()
@@ -70,8 +70,8 @@ class AdminController extends Controller
         $common_data = new Array_();
         $common_data->title = 'User Create';
         $role = Role::where('status', 1)->get();
-        $admin=Admin::get();
-        return view('adminPanel.role.create_admin')->with(compact('common_data', 'role','admin'));
+        $admin = Admin::get();
+        return view('adminPanel.role.create_admin')->with(compact('common_data', 'role', 'admin'));
     }
 
     public function adminRoleStore(Request $request)
@@ -82,5 +82,4 @@ class AdminController extends Controller
         $role->save();
         return redirect()->back()->with('success', 'Successfully Created Role');
     }
-
 }

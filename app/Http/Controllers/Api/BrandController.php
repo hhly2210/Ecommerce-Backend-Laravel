@@ -8,13 +8,15 @@ use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
-    public function allBrand(){
-        $brand= Brand::get();
+    public function allBrand()
+    {
+        $brand = Brand::get();
         return response($brand);
     }
 
-    public function topBrand(){
-        $brand= Brand::get()->take(6);
+    public function topBrand()
+    {
+        $brand = Brand::get()->take(6);
         return response($brand);
     }
 }

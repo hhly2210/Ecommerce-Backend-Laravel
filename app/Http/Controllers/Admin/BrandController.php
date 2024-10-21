@@ -9,13 +9,15 @@ use Image;
 
 class BrandController extends Controller
 {
-    public function brandShow(){
-        $brandList=Brand::get();
+    public function brandShow()
+    {
+        $brandList = Brand::get();
         return view('adminPanel.brand.brand')->with(compact('brandList'));
     }
-    public function brandStore(Request $request){
-        $brand=new Brand();
-        $brand->name=$request->brand;
+    public function brandStore(Request $request)
+    {
+        $brand = new Brand();
+        $brand->name = $request->brand;
         $brand->image = $this->brandIcon($request->banner_img);
         $brand->save();
 
@@ -24,11 +26,12 @@ class BrandController extends Controller
 
 
 
-    public function brandUpdate(Request $request){
+    public function brandUpdate(Request $request)
+    {
 
-        $brand=Brand::find($request->id);
-        $brand->name=$request->name;
-        if($request->updateImage){
+        $brand = Brand::find($request->id);
+        $brand->name = $request->name;
+        if ($request->updateImage) {
             $brand->image = $this->brandIcon($request->updateImage);
         }
         $brand->save();
@@ -58,8 +61,6 @@ class BrandController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 }

@@ -30,15 +30,16 @@ class AuthController extends Controller
                 'status' => 200,
                 'token' => $token,
                 'user' => $user,
-            ]);
+            ]
+        );
     }
 
     public function signup(SignupRequest $request)
     {
         $data = $request->validated();
         /** @var User $user */
-        $emailCheck=User::where('email',$data['email'])->first();
-        if($emailCheck){
+        $emailCheck = User::where('email', $data['email'])->first();
+        if ($emailCheck) {
             return response([
                 'status' => 422,
                 'msg' => "This email already exists"
@@ -53,16 +54,15 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
         Auth::login($user);
 
-        $userdata=Auth::user();
-
-
+        $userdata = Auth::user();
 
         return response(
             [
                 'status' => 200,
                 'token' => $token,
                 'user' => $userdata,
-            ]);
+            ]
+        );
     }
 
     public function logout(Request $request)
@@ -72,19 +72,18 @@ class AuthController extends Controller
         $user->currentAccessToken()->delete();
         return response('', 204);
     }
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
 
-        $hasPass=  Hash::make($request->newPass);
-        $checkCurrentPass=Hash::check($request->currentPass,Auth::user()->password);
-        if(!$checkCurrentPass){
-            $data=['status'=>400,'msg'=>"The current password is incorrect" ];
-              return response()->json($data);
-        }
-        else{
-             User::where('email',Auth::user()->email)->update(['password'=>$hasPass]);
-            $data=['status'=>200,'msg'=>"Password Successfully Changed" ];
+        $hasPass =  Hash::make($request->newPass);
+        $checkCurrentPass = Hash::check($request->currentPass, Auth::user()->password);
+        if (!$checkCurrentPass) {
+            $data = ['status' => 400, 'msg' => "The current password is incorrect"];
+            return response()->json($data);
+        } else {
+            User::where('email', Auth::user()->email)->update(['password' => $hasPass]);
+            $data = ['status' => 200, 'msg' => "Password Successfully Changed"];
             return response()->json($data);
         }
-
     }
 }

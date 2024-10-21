@@ -9,37 +9,39 @@ use Image;
 
 class FeaturedLinkController extends Controller
 {
-    public function featuredLinkList(){
-        $featuredImage=FeaturedLink::get();
+    public function featuredLinkList()
+    {
+        $featuredImage = FeaturedLink::get();
         return view('adminPanel.featured_link.featured_link_list')->with(compact('featuredImage'));
     }
-    public function featuredLinkStore(Request $request){
+    public function featuredLinkStore(Request $request)
+    {
 
-        $feature=new FeaturedLink();
-        $feature->title=$request->title;
-        $feature->link=$request->featured_link;
-        $feature->image= $this->banner($request->banner_img);
-        if($request->is_active){
-            $feature->is_active=1 ;
-        }else{
-            $feature->is_active=0;
+        $feature = new FeaturedLink();
+        $feature->title = $request->title;
+        $feature->link = $request->featured_link;
+        $feature->image = $this->banner($request->banner_img);
+        if ($request->is_active) {
+            $feature->is_active = 1;
+        } else {
+            $feature->is_active = 0;
         }
         $feature->save();
         return redirect()->back()->with('success', 'Featured link  successfully created');
-
     }
 
-    public function featuredLinkUpdate(Request $request){
-        $feature=FeaturedLink::find($request->id);
-        $feature->title=$request->title;
-        $feature->link=$request->featured_link;
-        if($request->updateImage){
-            $feature->image= $this->banner($request->updateImage);
+    public function featuredLinkUpdate(Request $request)
+    {
+        $feature = FeaturedLink::find($request->id);
+        $feature->title = $request->title;
+        $feature->link = $request->featured_link;
+        if ($request->updateImage) {
+            $feature->image = $this->banner($request->updateImage);
         }
-        if($request->is_active){
-            $feature->is_active=1 ;
-        }else{
-            $feature->is_active=0;
+        if ($request->is_active) {
+            $feature->is_active = 1;
+        } else {
+            $feature->is_active = 0;
         }
         $feature->save();
         return redirect()->back()->with('success', 'Featured link  successfully updated');
@@ -69,8 +71,6 @@ class FeaturedLinkController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 }

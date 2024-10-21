@@ -21,7 +21,6 @@ class OrderController extends Controller
         $common_data->title = 'Pending Order';
         $orderList = Sell::where(['sell_type' => 2, 'order_status' => 0, 'deleted' => 0])->get();
         return view('adminPanel.order.pending_order')->with(compact('orderList', 'common_data'));
-
     }
 
     public function orderProcessing(Request $request)
@@ -31,7 +30,6 @@ class OrderController extends Controller
         $orderList = Sell::where(['sell_type' => 2, 'order_status' => 1, 'deleted' => 0])->get();
 
         return view('adminPanel.order.pending_order')->with(compact('orderList', 'common_data'));
-
     }
 
     public function orderOnTheWay(Request $request)
@@ -40,7 +38,6 @@ class OrderController extends Controller
         $common_data->title = 'Order On The Way ';
         $orderList = Sell::where(['sell_type' => 2, 'order_status' => 2, 'deleted' => 0])->get();
         return view('adminPanel.order.pending_order')->with(compact('orderList', 'common_data'));
-
     }
 
     public function orderCancelRequest(Request $request)
@@ -75,7 +72,6 @@ class OrderController extends Controller
         $common_data = new Array_();
         $orderList = Sell::where(['sell_type' => 2, 'order_status' => 6, 'deleted' => 0])->get();
         return view('adminPanel.order.pending_order')->with(compact('orderList', 'common_data'));
-
     }
 
     public function SellOrderDetails(Request $request)
@@ -94,4 +90,3 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Successfully Order Status Updated');
     }
 }
-

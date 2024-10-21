@@ -20,7 +20,7 @@ class ProductSubcategoryController extends Controller
         $productSubcategory = ProductSubCategory::where('deleted', 0)->where('status', 1)->get();
         $productCategory = ProductCategory::where('deleted', 0)->where('status', 1)->get();
 
-        return view('adminPanel.product_subcategory.product_subcategory')->with(compact('productSubcategory', 'productCategory','common_data'));
+        return view('adminPanel.product_subcategory.product_subcategory')->with(compact('productSubcategory', 'productCategory', 'common_data'));
     }
 
     public function productSubCategoryStore(Request $request)
@@ -33,7 +33,6 @@ class ProductSubcategoryController extends Controller
         $subcategory->save();
 
         return redirect()->back()->with('success', 'Subcategory Successfully created');
-
     }
 
     public function productSubCategoryUpdate(Request $request)
@@ -44,18 +43,19 @@ class ProductSubcategoryController extends Controller
         $subcategory->note = $request->note;
         $subcategory->save();
         return redirect()->back()->with('success', 'Subcategory Successfully Updated');
-
     }
-    public function productSubCategoryDelete(Request $request){
+    public function productSubCategoryDelete(Request $request)
+    {
         $subcategory = ProductSubCategory::find($request->id);
-        $subcategory->deleted=1;
+        $subcategory->deleted = 1;
         $subcategory->save();
         return redirect()->back()->with('success', 'Subcategory Successfully Deleted');
     }
 
-    public function subcategoryListGet(Request $request){
+    public function subcategoryListGet(Request $request)
+    {
 
-        $subcategoryList=ProductSubCategory::where('category_id',$request->category_id)->where('status',1)->where('deleted',0)->get();
+        $subcategoryList = ProductSubCategory::where('category_id', $request->category_id)->where('status', 1)->where('deleted', 0)->get();
         return view('adminPanel.product_subcategory._subcategory_list')->with(compact('subcategoryList'))->render();
     }
 }

@@ -85,10 +85,10 @@ class CashOnDeliveryController extends Controller
             }
             foreach ($order_items as $item) {
                 $product = Product::find($item['id']);
-                $availableProduct=$product->available_quantity;
-                $qty=$item['quantity'];
-                $total_qty=$availableProduct-$qty;
-                Product::where('id',$item['id'])->update(['available_quantity'=>$total_qty]);
+                $availableProduct = $product->available_quantity;
+                $qty = $item['quantity'];
+                $total_qty = $availableProduct - $qty;
+                Product::where('id', $item['id'])->update(['available_quantity' => $total_qty]);
             }
 
 
@@ -136,7 +136,6 @@ class CashOnDeliveryController extends Controller
             if ($shippingInfo['email']) {
                 Mail::to($shippingInfo['email'])->send(new OrderMail($details));
             }
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return response()->json('Internal error', 404);
@@ -147,7 +146,5 @@ class CashOnDeliveryController extends Controller
             'msg' => 'Successfully payment completed',
         ];
         return response()->json($success);
-
-
     }
 }

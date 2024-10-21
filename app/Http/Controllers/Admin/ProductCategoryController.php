@@ -17,7 +17,7 @@ class ProductCategoryController extends Controller
         $common_data = new Array_();
         $common_data->title = 'Product Category';
         $category = ProductCategory::where('status', 1)->where('deleted', 0)->get();
-        return view('adminPanel.product_category.product_category')->with(compact('category','common_data'));
+        return view('adminPanel.product_category.product_category')->with(compact('category', 'common_data'));
     }
 
     public function productCategoryStore(Request $request)
@@ -37,21 +37,21 @@ class ProductCategoryController extends Controller
         $subcategory = ProductCategory::find($request->category_id);
         $subcategory->name = $request->name;
         $subcategory->note = $request->note;
-        if($request->updateImage){
+        if ($request->updateImage) {
             $subcategory->image = $this->categoryIcon($request->updateImage);
         }
-        if($request->is_popular){
+        if ($request->is_popular) {
             $subcategory->is_popular = 1;
-        }else{
+        } else {
             $subcategory->is_popular = 0;
         }
         $subcategory->save();
         return redirect()->back()->with('success', 'Category Successfully Updated');
-
     }
-    public function productCategoryDelete(Request $request){
+    public function productCategoryDelete(Request $request)
+    {
         $subcategory = ProductSubCategory::find($request->id);
-        $subcategory->deleted=1;
+        $subcategory->deleted = 1;
         $subcategory->save();
         return redirect()->back()->with('success', 'Subcategory Successfully Deleted');
     }
@@ -80,8 +80,6 @@ class ProductCategoryController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 }

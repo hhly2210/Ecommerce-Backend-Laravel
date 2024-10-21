@@ -25,7 +25,7 @@ class ReportController extends Controller
                 ->groupBy('sell_details.product_id')
                 ->orderBy('total_sell', 'DESC')
                 ->get();
-        }else{
+        } else {
             $sellProduct = DB::table("sell_details")->join('products', 'sell_details.product_id', '=', 'products.id')
                 ->select('products.*', DB::raw("SUM(sell_details.sale_quantity) as total_sell"))
                 ->groupBy('sell_details.product_id')
@@ -49,7 +49,8 @@ class ReportController extends Controller
 
             $sellProduct = DB::table("sell_details")->join('products', 'sell_details.product_id', '=', 'products.id')
                 ->whereBetween('sell_details.created_at', [$from, $to])
-                ->select('products.*',
+                ->select(
+                    'products.*',
                     DB::raw("SUM(sell_details.sale_quantity) as total_sell"),
                     DB::raw("SUM(sell_details.unit_product_cost) as total_cost"),
                     DB::raw("SUM(sell_details.unit_sell_price) as total_sell_price"),
@@ -59,7 +60,8 @@ class ReportController extends Controller
                 ->get();
         } else {
             $sellProduct = DB::table("sell_details")->join('products', 'sell_details.product_id', '=', 'products.id')
-                ->select('products.*',
+                ->select(
+                    'products.*',
                     DB::raw("SUM(sell_details.sale_quantity) as total_sell"),
                     DB::raw("SUM(sell_details.unit_product_cost) as total_cost"),
                     DB::raw("SUM(sell_details.unit_sell_price) as total_sell_price"),
@@ -68,12 +70,8 @@ class ReportController extends Controller
                 ->orderBy('total_sell_price', 'DESC')
                 ->get();
         }
-//        return $sellProduct;
+        //        return $sellProduct;
 
         return view('adminPanel.report.profit_report')->with(compact('sellProduct', 'common_data'));
-
-
     }
 }
-
-

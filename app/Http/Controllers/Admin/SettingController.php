@@ -20,11 +20,11 @@ class SettingController extends Controller
         $common_data = new Array_();
         $common_data->title = 'Shipping Costs Set';
         $divisionList = Division::get();
-        $districtList=District::get();
+        $districtList = District::get();
         $currency = countryList();
-        $currencyData=Currency::first();
-        $shippingCost=ShippingCost::first();
-        return view('adminPanel.setting.shipping_rate')->with(compact('divisionList', 'common_data', 'currency','currencyData','shippingCost','districtList'));
+        $currencyData = Currency::first();
+        $shippingCost = ShippingCost::first();
+        return view('adminPanel.setting.shipping_rate')->with(compact('divisionList', 'common_data', 'currency', 'currencyData', 'shippingCost', 'districtList'));
     }
 
     public function districtList(Request $request)
@@ -65,7 +65,6 @@ class SettingController extends Controller
             $currency->currency_symbol = $request->currency_symbol;
             $currency->par_dollar_rate = $request->dollar_rate;
             $currency->save();
-
         } else {
             $currency = new Currency();
             $currency->country_name = $request->currency_country;
@@ -74,59 +73,65 @@ class SettingController extends Controller
             $currency->save();
         }
         return redirect()->back()->with('success', "Successfully Currency Updated");
-
     }
 
 
-    public function faqView(){
-        $faqList=Faq::get();
+    public function faqView()
+    {
+        $faqList = Faq::get();
         return view('adminPanel.setting.faq')->with(compact('faqList'));
     }
-    public function faqStore(Request $request){
+    public function faqStore(Request $request)
+    {
 
-        $faqdata=new Faq();
-        $faqdata->title=$request->title;
-        $faqdata->details=$request->details;
+        $faqdata = new Faq();
+        $faqdata->title = $request->title;
+        $faqdata->details = $request->details;
         $faqdata->save();
         return redirect()->back()->with('success', "Successfully created faq");
     }
-    public function faqEdit(Request $request){
-        $faqdata=Faq::find($request->id);
-        $faqdata->title=$request->title;
-        $faqdata->details=$request->details;
+    public function faqEdit(Request $request)
+    {
+        $faqdata = Faq::find($request->id);
+        $faqdata->title = $request->title;
+        $faqdata->details = $request->details;
         $faqdata->save();
         return redirect()->back()->with('success', "Successfully updated faq");
     }
 
-    public function faqDelete(Request $request){
-        $faqdata=Faq::where('id',$request->id)->delete();
+    public function faqDelete(Request $request)
+    {
+        $faqdata = Faq::where('id', $request->id)->delete();
         return redirect()->back()->with('success', "Successfully deleted faq");
     }
 
-    public function adsView(){
-        $adsList= Ads::get();
+    public function adsView()
+    {
+        $adsList = Ads::get();
         return view('adminPanel.ads.ads_list')->with(compact('adsList'));
     }
-    public function adsStore(Request $request){
-         $adslist=new Ads();
-         $adslist->img=$this->adimg($request->banner_img);
-         $adslist->position=$request->position;
-         $adslist->save();
+    public function adsStore(Request $request)
+    {
+        $adslist = new Ads();
+        $adslist->img = $this->adimg($request->banner_img);
+        $adslist->position = $request->position;
+        $adslist->save();
         return redirect()->back()->with('success', "Successfully Ads  created");
     }
-    public function adsEdit(Request $request){
-        Ads::where('position',$request->position)->update(['position'=>null]);
-        $adslist=Ads::find($request->id);
-        if($request->updateImage){
-            $adslist->img=$this->adimg($request->updateImage);
+    public function adsEdit(Request $request)
+    {
+        Ads::where('position', $request->position)->update(['position' => null]);
+        $adslist = Ads::find($request->id);
+        if ($request->updateImage) {
+            $adslist->img = $this->adimg($request->updateImage);
         }
-        $adslist->position=$request->position;
+        $adslist->position = $request->position;
         $adslist->save();
-        return redirect()->back()->with('success','successfully updated Ads');
+        return redirect()->back()->with('success', 'successfully updated Ads');
     }
-//    public function adsDelete(){
-//        return $request;
-//    }
+    //    public function adsDelete(){
+    //        return $request;
+    //    }
 
 
     public function brandIcon($image)
@@ -149,9 +154,7 @@ class SettingController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
 
 
@@ -178,9 +181,6 @@ class SettingController extends Controller
             $logo_image->save($logo_path);
 
             return $db_media_img_path;
-
         }
-
     }
-
 }
