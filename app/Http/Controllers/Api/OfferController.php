@@ -25,12 +25,12 @@ class OfferController extends Controller
         $offer_id = $request->offer_id;
         $subcategory_id = $request->subcategory_id;
         return OfferProductResource::collection(Offer_product_list::where('offer_id', $offer_id)
-        ->with('productInfo')
-            ->whereHas('productInfo',function($q) use($subcategory_id){
-                return $q->when($subcategory_id!='All',function($q) use($subcategory_id){
-                    return $q->where('products.subcategory_id',$subcategory_id);
+            ->with('productInfo')
+            ->whereHas('productInfo', function ($q) use ($subcategory_id) {
+                return $q->when($subcategory_id != 'All', function ($q) use ($subcategory_id) {
+                    return $q->where('products.subcategory_id', $subcategory_id);
                 });
             })
-        ->paginate(20));
+            ->paginate(20));
     }
 }

@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 
 class CompanyInfoController extends Controller
 {
-    public function getCompanyInfo(){
-      $companyInfo=  CompanyInfo::first();
-      return response()->json($companyInfo);
-    }
+  public function getCompanyInfo()
+  {
+    $companyInfo =  CompanyInfo::first();
+    return response()->json($companyInfo);
+  }
 }

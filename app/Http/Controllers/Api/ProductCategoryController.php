@@ -10,23 +10,25 @@ use Illuminate\Http\Request;
 
 class ProductCategoryController extends Controller
 {
-    public function categoryList(){
-        $categorydata=UserOrderListResource::collection(ProductCategory::where('status',1)->where('deleted',0)->get());
+    public function categoryList()
+    {
+        $categorydata = UserOrderListResource::collection(ProductCategory::where('status', 1)->where('deleted', 0)->get());
 
-        $categoryList=ProductCategoryResource::collection($categorydata);
+        $categoryList = ProductCategoryResource::collection($categorydata);
 
-            return response()->json($categoryList,200);
+        return response()->json($categoryList, 200);
     }
 
-    public function allCategorySubcategory(){
+    public function allCategorySubcategory()
+    {
 
-        $categorySubcategory=ProductCategoryResource::collection(ProductCategory::where('status',1)->where('deleted',0)->get());
-        return response()->json($categorySubcategory,200);
-
+        $categorySubcategory = ProductCategoryResource::collection(ProductCategory::where('status', 1)->where('deleted', 0)->get());
+        return response()->json($categorySubcategory, 200);
     }
 
-    public function popularCategory(){
-        $popularCategory=ProductCategory::where('is_popular',1)->get();
-        return response($popularCategory,200);
+    public function popularCategory()
+    {
+        $popularCategory = ProductCategory::where('is_popular', 1)->get();
+        return response($popularCategory, 200);
     }
 }

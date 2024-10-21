@@ -54,36 +54,35 @@ class ProductController extends Controller
         }
     }
 
-    public function relatedProductGet(Request $request){
-        $plist= explode(",",$request->productlist);
+    public function relatedProductGet(Request $request)
+    {
+        $plist = explode(",", $request->productlist);
 
-        $subcategorylist=[];
-        $productlist=[$request->productlist];
+        $subcategorylist = [];
+        $productlist = [$request->productlist];
 
 
-        foreach ($plist as $key=>$productid){
-            $subcategory= Product::where('id',$productid)->first();
-            $sub=$subcategory->subcategory_id;
-            $subcategorylist[]=$sub;
+        foreach ($plist as $key => $productid) {
+            $subcategory = Product::where('id', $productid)->first();
+            $sub = $subcategory->subcategory_id;
+            $subcategorylist[] = $sub;
         }
-//        return response($subcategorylist,200);
-//        return $productlist;
+        //        return response($subcategorylist,200);
+        //        return $productlist;
 
 
-       $productlist= ProductResource::collection(Product::whereNotIn('id',$plist)->whereIn('subcategory_id',$subcategorylist)->where('deleted', 0)->where('status', 1)->inRandomOrder()->limit(10)->get());
+        $productlist = ProductResource::collection(Product::whereNotIn('id', $plist)->whereIn('subcategory_id', $subcategorylist)->where('deleted', 0)->where('status', 1)->inRandomOrder()->limit(10)->get());
 
         return response($productlist, 200);
-
     }
 
-    public function minMaxPrice(){
-       $minPrice= Product::min('current_sale_price');
-       $maxPrice= Product::max('current_sale_price');
-       $price=['min'=>$minPrice,'max'=>$maxPrice];
+    public function minMaxPrice()
+    {
+        $minPrice = Product::min('current_sale_price');
+        $maxPrice = Product::max('current_sale_price');
+        $price = ['min' => $minPrice, 'max' => $maxPrice];
 
-       return response($price,200);
-
-
+        return response($price, 200);
     }
 
 
@@ -93,7 +92,7 @@ class ProductController extends Controller
         $max = $request->max;
         $color = $request->color;
         $size = $request->size;
-        $type=$request->type;
+        $type = $request->type;
         $category = $request->category_id;
         $sub_category = $request->sub_category_id;
         $brand_id = $request->brand_id;
@@ -114,30 +113,30 @@ class ProductController extends Controller
                 return $q->where('color', 'like', '%' . $color . '%');
             })
             ->when($size != '0', function ($q) use ($size) {
-               return $q->where('size', 'like', '%' . $size . '%');
+                return $q->where('size', 'like', '%' . $size . '%');
             })
-            ->when($type == 'trending', function ($q)  {
+            ->when($type == 'trending', function ($q) {
                 return $q->where('is_trending', 1);
             })
-            ->when($type == 'popular', function ($q)  {
+            ->when($type == 'popular', function ($q) {
                 return $q->where('is_popular', 1);
             })
-            ->when($type == 'newArrival', function ($q)  {
+            ->when($type == 'newArrival', function ($q) {
                 return $q->orderBy('id', 'DESC');
             })
-            ->when(($min>=0)&&($max>0), function ($q) use ($min,$max) {
+            ->when(($min >= 0) && ($max > 0), function ($q) use ($min, $max) {
                 $q->whereBetween('current_sale_price', [$min, $max]);
             })
-            ->when($srcorderType=='price_asc', function ($q){
+            ->when($srcorderType == 'price_asc', function ($q) {
                 $q->orderBy("current_sale_price", "asc");
             })
-            ->when($srcorderType=='price_dsc', function ($q){
+            ->when($srcorderType == 'price_dsc', function ($q) {
                 $q->orderBy("current_sale_price", "desc");
             })
-            ->when($srcorderType=='name_asc', function ($q){
+            ->when($srcorderType == 'name_asc', function ($q) {
                 $q->orderBy("name", "asc");
             })
-            ->when($srcorderType=='name_dsc', function ($q){
+            ->when($srcorderType == 'name_dsc', function ($q) {
                 $q->orderBy("name", "desc");
             })
             ->get();
@@ -170,7 +169,7 @@ class ProductController extends Controller
     public function subCategoryProduct(Request $request)
     {
         $subCategory_id = $request->subCategory_id;
-//        $subCategory_product = Product::where('subcategory_id', $subCategory_id)->where('deleted', 0)->where('status', 1)->get();
+        //        $subCategory_product = Product::where('subcategory_id', $subCategory_id)->where('deleted', 0)->where('status', 1)->get();
         return ProductResource::collection(Product::where('subcategory_id', $subCategory_id)->where('deleted', 0)->where('status', 1)->paginate(4));
     }
 
@@ -188,7 +187,7 @@ class ProductController extends Controller
     {
         $productDetails = Product::with('productCategory')->with('productImage')->find($request->id);
 
-//        return $productDetails = Product::with('productCategory')->with('productImage')->find($request->id);
+        //        return $productDetails = Product::with('productCategory')->with('productImage')->find($request->id);
         return response()->json($productDetails);
     }
     public function srcProductList(Request $request)
@@ -207,14 +206,15 @@ class ProductController extends Controller
         return response()->json($productSizList);
     }
 
-    public function allColor(){
-       $allColor= ProductColor::get();
+    public function allColor()
+    {
+        $allColor = ProductColor::get();
         return response()->json($allColor);
     }
 
-    public function allSize(){
-        $allSize= ProductSize::get();
+    public function allSize()
+    {
+        $allSize = ProductSize::get();
         return response()->json($allSize);
-
     }
 }

@@ -171,7 +171,6 @@ class StripePaymentController extends Controller
             if ($shippingInfo['email']) {
                 Mail::to($shippingInfo['email'])->send(new OrderMail($details));
             }
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return response()->json('Internal error', 404);
@@ -182,6 +181,5 @@ class StripePaymentController extends Controller
             'msg' => 'Successfully payment completed',
         ];
         return response()->json($success);
-
     }
 }
