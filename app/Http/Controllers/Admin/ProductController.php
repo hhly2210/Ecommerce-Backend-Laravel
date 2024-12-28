@@ -104,8 +104,8 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->subcategory_id = $request->subcategory_id;
         $product->image_path = $request->image_path;
-        $product->color = implode(",", $request->color);
-        $product->size = implode(",", $request->size);
+        // $product->color = implode(",", $request->color);
+        // $product->size = implode(",", $request->size);
         $product->brand_id = $request->brand_id;
         $product->supplier_id = $request->supplier_id;
         $product->current_purchase_cost = $request->current_purchase_cost;

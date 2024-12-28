@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use View;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,9 @@ class AppServiceProvider extends ServiceProvider
         // $companydata = CompanyInfo::first();
 
         // View::share('company_info_share', $companydata);
+        // if ($this->app->environment('production')) {
+        // if ($this->app->environment('local')) {
+        //     URL::forceScheme('https');
+        // }
     }
 }

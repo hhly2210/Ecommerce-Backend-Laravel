@@ -241,7 +241,8 @@
                                                     <tbody>
                                                         <tr>
                                                             <td align="center">
-                                                                © 2023-Reinforce Lab. All rights reserved.
+                                                                © {{ date('Y') }}-Reinforce Lab. All rights
+                                                                reserved.
                                                             </td>
                                                         </tr>
                                                     </tbody>
